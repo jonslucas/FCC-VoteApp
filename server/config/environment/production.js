@@ -15,7 +15,7 @@ module.exports = {
 
   // MongoDB connection options
   mongo: {
-    uri:    process.env.'mongodb://heroku_vptx896k:usmbspkv45lh4ihi9f296orijo@ds051740.mongolab.com:51740/heroku_vptx896k' ||
+    uri:    process.env.MONGOLAB_URI ||
             process.env.MONGOHQ_URL ||
             process.env.OPENSHIFT_MONGODB_DB_URL+process.env.OPENSHIFT_APP_NAME ||
             'mongodb://localhost/basejumps'
