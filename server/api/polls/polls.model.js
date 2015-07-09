@@ -5,9 +5,15 @@ var mongoose = require('mongoose'),
 
 var PollsSchema = new Schema({
   question: String,
-  author: String,
+  author: {
+    type: Schema.Types.ObjectId,
+    ref: 'User'
+  },
   choices: [{choice:String,votes: Number}],
-  comments: [{body:String, author:String, date: Date}],
+  comments: [{
+    body:String,
+    author:{type: Schema.Types.ObjectId, ref: 'User'},
+    date: Date}],
   created_date: {type: Date, default: Date.now},
   active: Boolean
 });

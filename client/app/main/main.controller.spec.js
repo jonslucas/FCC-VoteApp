@@ -15,7 +15,7 @@ describe('Controller: MainCtrl', function () {
     });
   }));
 
-  it('should ...', function () {
+  it('should ...', function ($scope) {
     expect(1).toEqual(1);
   });
 });

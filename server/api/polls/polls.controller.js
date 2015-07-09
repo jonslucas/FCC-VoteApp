@@ -3,11 +3,11 @@
 var _ = require('lodash');
 var Polls = require('./polls.model');
 
-// Get list of pollss
+// Get list of polls
 exports.index = function(req, res) {
-  Polls.find(function (err, pollss) {
+  Polls.find(function (err, polls) {
     if(err) { return handleError(res, err); }
-    return res.json(200, pollss);
+    return res.json(200, polls);
   });
 };
 
@@ -22,7 +22,9 @@ exports.show = function(req, res) {
 
 // Creates a new polls in the DB.
 exports.create = function(req, res) {
-  Polls.create(req.body, function(err, polls) {
+
+  var poll = new Polls(_.merge({author:req.user._id}, req.body));
+  poll.create(req.body, function(err, polls) {
     if(err) { return handleError(res, err); }
     return res.json(201, polls);
   });
