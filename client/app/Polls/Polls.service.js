@@ -14,6 +14,17 @@ angular.module('basejumpsApp')
         cb(err);
       })
     };
+    var create_poll = function(poll, cb){
+      $http({
+        method:'post',
+        url:'/api/polls/',
+        data: poll
+      }).success(function(response){
+        cb(null, response);
+      }).error(function(err){
+        cb(err);
+      })
+    };
     // Public API here
     return {
       someMethod: function () {
