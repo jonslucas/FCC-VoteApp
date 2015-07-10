@@ -5,7 +5,7 @@ var Polls = require('./polls.model');
 
 // Get list of polls
 exports.index = function(req, res) {
-  Polls.find(function (err, polls) {
+  Polls.loadCommunity(function (err, polls) {
     if(err) { return handleError(res, err); }
     return res.json(200, polls);
   });

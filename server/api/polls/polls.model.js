@@ -18,4 +18,14 @@ var PollsSchema = new Schema({
   active: Boolean
 });
 
+PollsSchema.statics = {
+  loadCommunity: function(cb) {
+    this.find({})
+      .populate({path:'author', select: 'name'})
+      .sort('-date')
+      .limit(50)
+      .exec(cb);
+  }
+};
+
 module.exports = mongoose.model('Polls', PollsSchema);
