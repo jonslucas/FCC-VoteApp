@@ -24,7 +24,7 @@ exports.show = function(req, res) {
 exports.create = function(req, res) {
 
   var poll = new Polls(_.merge({author:req.user._id}, req.body));
-  poll.create(req.body, function(err, polls) {
+  poll.save(req.body, function(err, polls) {
     if(err) { return handleError(res, err); }
     return res.json(201, polls);
   });

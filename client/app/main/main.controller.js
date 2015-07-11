@@ -8,6 +8,10 @@ angular.module('basejumpsApp')
     });
 
     $scope.savePoll = function(){
+      console.log('createButton clicked');
+      console.log('subject: '+$scope.subject);
+      console.log('1st option: '+$scope.option1);
+      console.log('2nd option: '+$scope.option2);
       if(!$scope.subject || !$scope.option1 || !$scope.option2) {return;}
       else {
         var choices = [{
@@ -22,11 +26,12 @@ angular.module('basejumpsApp')
           choices: choices,
           active: true
         };
+        console.log(JSON.stringify(poll));
         Polls.createPoll(poll, function(err, resp){
           if(err) {return console.error(err);}
-          return console.log(resp);
+          console.log('no error');
+          console.log(resp);
         });
-      }
 
     };
     $scope.message = 'Hello';
