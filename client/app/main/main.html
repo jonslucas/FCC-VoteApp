@@ -1,19 +1,28 @@
 <div ng-include="'components/navbar/navbar.html'"></div>
 <div class="text-center">
-<h1>Poll</h1>
+  <h1>Poll</h1>
 
-<div>
-  <div class="createButton btn btn-primary" ng-click="savePoll()" >
-    Create Poll
+  <div class="confBtns">
+    <div class="createButton btn btn-primary" ng-click="savePoll()" >
+      Create Poll
+    </div>
+    <div class="addOption btn btn-success" ng-click="addChoice()">
+      Add Choice
+    </div>
+    <div class="forms">
+      <div class="form-group">
+        <label for="question">Question:</label>
+        <input id="question" class="form-control" type="text" ng-model="subject" placeholder="What would you like to ask?" />
+      </div>
+      <div class="choices" ng-repeat="choice in choices">
+        <label for="choice">Choice {{$index+1}}: </label>
+        <div class="input-group">
+          <input class="form-control" id="choice" type="text" ng-model="choice.name"/>
+          <div class="input-group-addon" ng-click="removeChoice($index)"><i class="fa fa-close"></i></div>
+        </div>
+
+      </div>
+    </div>
+
   </div>
-  <div>
-    <input type="text" ng-model="subject" value="What would you like to ask?" />
-  </div>
-  <div>
-    <input type="text" ng-model="option1"/>
-  </div>
-  <div>
-    <input type="text" ng-model="option2"/>
-  </div>
-</div>
 </div>

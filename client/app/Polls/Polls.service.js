@@ -19,15 +19,22 @@ angular.module('basejumpsApp')
 
 
       createPoll: function (poll, cb) {
-        $http({
-          method: 'post',
-          url: '/api/polls/',
-          data: poll
-        }).success(function (response) {
-          cb(null, response);
-        }).error(function (err) {
-          cb(err);
-        })
+        console.log('post to /api/polls/');
+        //$http({
+        //  method: 'post',
+        //  url: '/api/polls/',
+        //  data: poll
+        //}).then(function (response) {
+        //  console.log('response: '+response);
+        //  cb(response);
+        //})
+        $http.post('/api/polls/', poll)
+          .success(function(response){
+            cb(null, response);
+          })
+          .error(function(err){
+            cb(err);
+          });
       },
       deletePolls: function (id, cb) {
         $http({

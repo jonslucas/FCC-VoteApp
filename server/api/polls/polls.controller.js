@@ -22,12 +22,16 @@ exports.show = function(req, res) {
 
 // Creates a new polls in the DB.
 exports.create = function(req, res) {
-
   var poll = new Polls(_.merge({author:req.user._id}, req.body));
   poll.save(req.body, function(err, polls) {
-    if(err) { return handleError(res, err); }
-    return res.json(201, polls);
+    if(err) {
+      console.log('error encountered');
+      return handleError(res, err);
+    }
+    console.log('poll saved');
+
   });
+  return res.json(201, poll._id);
 };
 
 // Updates an existing polls in the DB.
