@@ -17,25 +17,19 @@ angular.module('basejumpsApp')
     };
     return {
 
-
       createPoll: function (poll, cb) {
         console.log('post to /api/polls/');
-        //$http({
-        //  method: 'post',
-        //  url: '/api/polls/',
-        //  data: poll
-        //}).then(function (response) {
-        //  console.log('response: '+response);
-        //  cb(response);
-        //})
-        $http.post('/api/polls/', poll)
-          .success(function(response){
-            cb(null, response);
-          })
-          .error(function(err){
-            cb(err);
-          });
+        $http({
+          method: 'post',
+          url: '/api/polls/',
+          data: poll
+        }).success(function (response) {
+          cb(null, response);
+        }).error(function(err){
+          cb(err);
+        })
       },
+
       deletePolls: function (id, cb) {
         $http({
           method: 'delete',
@@ -46,6 +40,17 @@ angular.module('basejumpsApp')
         }).error(function (err) {
           cb(err);
         })
+      },
+
+      getUserPolls: function(cb) {
+        $http({
+          method:'get',
+          url: '/api/polls/user/'
+        }).success(function(data){
+          cb(null, data);
+        }).error(function(err){
+          cb(err);
+        });
       },
 
       loadCommunity: function (cb) {

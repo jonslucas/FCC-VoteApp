@@ -19,6 +19,17 @@ exports.show = function(req, res) {
     return res.json(polls);
   });
 };
+//Get own polls for authenticated user
+exports.getBatch = function(req, res) {
+  console.log('getBatch called');
+  console.log('for user: '+req.user._id);
+  Polls.find({'author._id': req.user._id}, function(err, polls){
+    if(err) { return handleError(res, err); }
+    if(!polls) { return res.send(404); }
+    console.log('found these: '+JSON.stringify(polls));
+    return res.json(polls);
+  });
+};
 
 // Creates a new polls in the DB.
 exports.create = function(req, res) {

@@ -2,6 +2,10 @@
 
 angular.module('basejumpsApp')
   .controller('MainCtrl', function ($scope, Polls) {
+    var printVars = function() {
+      console.log('showCreate: '+$scope.showCreate);
+      console.log('showOwn: '+$scope.showOwn);
+    };
     Polls.loadCommunity(function(err, resp) {
       if(err){return console.error(err);}
       $scope.community = resp;
@@ -10,6 +14,30 @@ angular.module('basejumpsApp')
       {name:''},
       {name:''}
     ];
+    $scope.showCreate = false;
+    $scope.showOwn = true;
+    $scope.getCreate = function() {
+      console.log('getCreate');
+      console.log('before');
+      printVars();
+      $scope.showOwn=false;
+      $scope.showCreate=true;
+      console.log('after');
+      printVars();
+    };
+    $scope.getOwn = function() {
+      console.log('getOwn');
+      console.log('before');
+      printVars();
+      $scope.showCreate = false;
+      $scope.showOwn = true;
+      console.log('after');
+      printVars();
+      Polls.getUserPolls(function(err, data){
+        if(err){ return console.error(err); }
+        $scope.polls = data;
+      });
+    };
     $scope.addChoice = function() {
       $scope.choices.push({name:''});
     };
