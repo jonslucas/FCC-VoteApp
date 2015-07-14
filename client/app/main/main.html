@@ -11,7 +11,10 @@
 
   <div ng-show="showOwn" >
     <div ng-repeat="poll in polls">
-      {{poll}}
+      {{poll.question}}
+      <canvas id="poll.chart.id" class="poll.chart.class" chart-type="polls.chart.type" data="polls.chart.data"
+              labels="polls.chart.data" legend="true"></canvas>
+
     </div>
   </div>
   <div ng-show="showCreate" class="confBtns">

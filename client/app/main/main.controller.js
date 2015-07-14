@@ -17,25 +17,31 @@ angular.module('basejumpsApp')
     $scope.showCreate = false;
     $scope.showOwn = true;
     $scope.getCreate = function() {
-      console.log('getCreate');
-      console.log('before');
-      printVars();
       $scope.showOwn=false;
       $scope.showCreate=true;
-      console.log('after');
-      printVars();
     };
     $scope.getOwn = function() {
-      console.log('getOwn');
-      console.log('before');
-      printVars();
       $scope.showCreate = false;
       $scope.showOwn = true;
-      console.log('after');
-      printVars();
       Polls.getUserPolls(function(err, data){
         if(err){ return console.error(err); }
-        $scope.polls = data;
+        $scope.polls = data.map(function(poll){
+          var chart = {
+            id:'Base',
+            class: 'chart-base',
+            type: 'Pie',
+            labels: [],
+            data: []
+          };
+          poll.choices.forEach(function (choice) {
+            chart.labels.push(choice.choice);
+            chart.data.push(choice.votes);
+          });
+          return {
+            question: poll.question,
+            chart: chart
+          };
+        })
       });
     };
     $scope.addChoice = function() {
@@ -62,13 +68,14 @@ angular.module('basejumpsApp')
           choices: choices,
           active: true
         };
-        console.log(JSON.stringify(poll));
         Polls.createPoll(poll, function (err, resp) {
           if (err) {
             return console.error(err);
           }
           console.log('no error');
           console.log(resp);
+          $scope.subject='';
+          $scope.choices = [{name:''},{name:''}];
         });
       }
     };

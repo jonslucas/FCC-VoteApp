@@ -21,12 +21,9 @@ exports.show = function(req, res) {
 };
 //Get own polls for authenticated user
 exports.getBatch = function(req, res) {
-  console.log('getBatch called');
-  console.log('for user: '+req.user._id);
-  Polls.find({'author._id': req.user._id}, function(err, polls){
+  Polls.find({author:req.user._id}, function(err, polls){
     if(err) { return handleError(res, err); }
     if(!polls) { return res.send(404); }
-    console.log('found these: '+JSON.stringify(polls));
     return res.json(polls);
   });
 };
@@ -36,11 +33,8 @@ exports.create = function(req, res) {
   var poll = new Polls(_.merge({author:req.user._id}, req.body));
   poll.save(req.body, function(err, polls) {
     if(err) {
-      console.log('error encountered');
       return handleError(res, err);
     }
-    console.log('poll saved');
-
   });
   return res.json(201, poll._id);
 };
