@@ -10,9 +10,8 @@
   </div>
 
   <div ng-show="showOwn" >
-    <div ng-repeat="poll in polls">
+    <div ng-repeat="poll in polls | orderBy:'-createdOn'">
       {{poll.question}}
-      {{poll.chart}}
       <canvas id="doughnut" class="chart chart-doughnut" data="poll.chart.data" labels="poll.chart.labels" legend="true">
 
       </canvas>

@@ -27,11 +27,8 @@ angular.module('basejumpsApp')
         if(err){ return console.error(err); }
         $scope.polls = data.map(function(poll){
           var chart = {
-            id:'base',
-            class: 'chart-base',
-            type: 'Pie',
             labels: [],
-            data: []
+            data: [3,9]
           };
           poll.choices.forEach(function (choice) {
             chart.labels.push(choice.choice);
@@ -39,6 +36,7 @@ angular.module('basejumpsApp')
           });
           return {
             question: poll.question,
+            createdOn: poll.created_date,
             chart: chart
           };
         })
