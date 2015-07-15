@@ -27,7 +27,7 @@ angular.module('basejumpsApp')
         if(err){ return console.error(err); }
         $scope.polls = data.map(function(poll){
           var chart = {
-            id:'Base',
+            id:'base',
             class: 'chart-base',
             type: 'Pie',
             labels: [],

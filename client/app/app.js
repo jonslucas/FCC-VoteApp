@@ -1,6 +1,7 @@
 'use strict';
 
 angular.module('basejumpsApp', [
+  'chart.js',
   'ngCookies',
   'ngResource',
   'ngSanitize',
