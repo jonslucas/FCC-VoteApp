@@ -9,7 +9,7 @@ var PollsSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'User'
   },
-  choices: [{choice:String,votes: Number}],
+  choices: [{choice:String,votes: Number, voters: [String]}],
   comments: [{
     body:String,
     author:{type: Schema.Types.ObjectId, ref: 'User'},
@@ -22,7 +22,7 @@ PollsSchema.statics = {
   loadCommunity: function(cb) {
     this.find({})
       .populate({path:'author', select: 'name'})
-      .sort('-date')
+      .sort('-created_date')
       .limit(50)
       .exec(cb);
   }
