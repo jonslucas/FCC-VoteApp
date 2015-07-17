@@ -17,8 +17,16 @@ angular.module('basejumpsApp')
     };
     return {
 
+      vote: function(poll, cb) {
+        $http.put('/api/polls/', poll)
+          .success(function (resp) {
+          cb(null, resp);
+        }).error(function (err) {
+          cb(err);
+        })
+      },
+
       createPoll: function (poll, cb) {
-        console.log('post to /api/polls/');
         $http({
           method: 'post',
           url: '/api/polls/',

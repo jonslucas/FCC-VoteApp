@@ -1,1 +1,45 @@
-<div>this is the userDashboard directive</div>
+<div class="text-center">
+  <h1>Dashboard</h1>
+  <div class="showBtns">
+    <div class="showPollsBtn btn btn-primary" ng-click="dCtrl.getOwn()">
+      Show My Polls
+    </div>
+    <div class="showCreateBtn btn btn-primary" ng-click="dCtrl.getCreate()">
+      Create New Polls
+    </div>
+  </div>
+
+
+  <div ng-show="dCtrl.showOwn" >
+    <div ng-repeat="poll in dCtrl.polls | orderBy:'-createdOn'">
+      {{poll.question}}
+      <canvas id="doughnut" class="chart chart-doughnut" data="poll.chart.data" labels="poll.chart.labels" legend="true">
+
+      </canvas>
+
+    </div>
+  </div>
+  <div ng-show="dCtrl.showCreate" class="confBtns">
+    <div class="createButton btn btn-primary" ng-click="dCtrl.savePoll()" >
+      Create Poll
+    </div>
+    <div class="addOption btn btn-success" ng-click="dCtrl.addChoice()">
+      Add Choice
+    </div>
+    <div class="forms">
+      <div class="form-group">
+        <label for="question">Question:</label>
+        <input id="question" class="form-control" type="text" ng-model="dCtrl.subject" placeholder="What would you like to ask?" />
+      </div>
+      <div class="choices" ng-repeat="choice in dCtrl.choices">
+        <label for="choice">Choice {{$index+1}}: </label>
+        <div class="input-group">
+          <input class="form-control" id="choice" type="text" ng-model="choice.name"/>
+          <div class="input-group-addon" ng-click="dCtrl.removeChoice($index)"><i class="fa fa-close"></i></div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>

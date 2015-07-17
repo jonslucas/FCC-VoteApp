@@ -41,6 +41,7 @@ exports.create = function(req, res) {
 
 // Updates an existing polls in the DB.
 exports.update = function(req, res) {
+  console.log('req.body: '+JSON.stringify(req.body));
   if(req.body._id) { delete req.body._id; }
   Polls.findById(req.params.id, function (err, polls) {
     if (err) { return handleError(res, err); }
