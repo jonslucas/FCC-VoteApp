@@ -4,13 +4,30 @@ angular.module('basejumpsApp')
   .factory('Polls', ['$http', function ($http) {
     var p = {};
 
+    var parsePoll = function(data) {
+      return data.map(function (poll) {
+        var chart = {
+          labels: [],
+          data: [3, 9]
+        };
+        poll.choices.forEach(function (choice) {
+          chart.labels.push(choice.choice);
+          chart.data.push(choice.votes);
+        });
+        return {
+          poll: poll,
+          chart: chart
+        };
+      });
+    };
+
     var get_polls = function(id, cb){
       $http({
         method:'get',
         url: '/api/polls/',
         data:id
       }).success(function(data){
-        cb(null, data);
+        cb(null, parsePoll(data));
       }).error(function(err){
         cb(err);
       })
@@ -55,7 +72,7 @@ angular.module('basejumpsApp')
           method:'get',
           url: '/api/polls/user/'
         }).success(function(data){
-          cb(null, data);
+          cb(null, parsePoll(data));
         }).error(function(err){
           cb(err);
         });

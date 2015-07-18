@@ -1,2 +1,10 @@
 <div ng-include="'components/navbar/navbar.html'"></div>
-<user-dashboard></user-dashboard>
+<div class="btn btn-danger" ng-click="showDashboard()">
+  Toggle Dashboard
+</div>
+<user-dashboard ng-show="showDash"></user-dashboard>
+<div ng-hide="showDash" class="polls" ng-repeat="poll in polls">
+  {{poll}}
+  <poll data="poll"></poll>
+</div>
+

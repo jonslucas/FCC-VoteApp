@@ -21,19 +21,11 @@ var dashCtrl = function(Polls) {
     ctrl.showOwn = true;
     Polls.getUserPolls(function(err, data){
       if(err){ return console.error(err); }
-      ctrl.polls = data.map(function(poll){
-        var chart = {
-          labels: [],
-          data: [3,9]
-        };
-        poll.choices.forEach(function (choice) {
-          chart.labels.push(choice.choice);
-          chart.data.push(choice.votes);
-        });
+      ctrl.polls = data.map(function(d){
         return {
-          question: poll.question,
-          createdOn: poll.created_date,
-          chart: chart
+          question: d.poll.question,
+          createdOn: d.created_date,
+          chart: d.chart
         };
       })
     });
