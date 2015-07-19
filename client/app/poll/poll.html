@@ -1,5 +1,6 @@
 <div>
-  {{poll.question}}
+  <h3>{{poll.question||poll.poll.question}}</h3>
+
   <canvas id="doughnut" class="chart chart-doughnut" data="poll.chart.data" labels="poll.chart.labels" legend="true">
 
   </canvas>

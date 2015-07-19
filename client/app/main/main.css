@@ -1,0 +1,19 @@
+.wrap {
+  width: 50%;
+  border-top: .1em solid black;
+  border-bottom: .1em solid black;
+  display: block;
+  height: 35em;
+  margin-bottom: .9em;
+}
+.right {
+  float:right;
+  border-right: .1em solid black;
+  display: inline-block;
+}
+.left {
+  float: left;
+  border-left: .1em solid black;
+  display: inline-block;
+}
+

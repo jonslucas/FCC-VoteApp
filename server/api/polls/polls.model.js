@@ -12,9 +12,9 @@ var PollsSchema = new Schema({
   choices: [{choice:String,votes: Number}],
   voters: [String],
   comments: [{
-    body:String,
-    author:{type: Schema.Types.ObjectId, ref: 'User'},
-    date: Date}],
+    type: Schema.Types.ObjectId,
+    ref: 'Comments'
+  }],
   created_date: {type: Date, default: Date.now},
   active: Boolean
 });

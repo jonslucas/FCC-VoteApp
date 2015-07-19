@@ -4,6 +4,19 @@ angular.module('basejumpsApp')
   .factory('Polls', ['$http', function ($http) {
     var p = {};
 
+    var get_comments = function(id, cb){
+      $http({
+        method:'get',
+        url: '/api/comments/',
+        params:{id: id}
+      }).success(function(data){
+        cb(null, data);
+      }).error(function(err){
+        cb(err);
+      });
+      //cb(null, 'None');
+    };
+
     var parsePoll = function(data) {
       return data.map(function (poll) {
         var chart = {
@@ -22,12 +35,27 @@ angular.module('basejumpsApp')
     };
 
     var get_polls = function(id, cb){
-      $http({
-        method:'get',
-        url: '/api/polls/',
-        data:id
-      }).success(function(data){
-        cb(null, parsePoll(data));
+      var config= {
+        method: 'get',
+        url: '/api/polls/'
+      };
+      if(id){
+        config.params = {id: id};
+      }
+      $http(config).success(function(data){
+        var parsed = parsePoll(data);
+        var output = parsed.map(function(elem){
+          get_comments(elem.poll._id, function(err, resp){
+            if(err){ return console.error(err); }
+            cb(null, {
+              poll: elem.poll,
+              comments:resp,
+              chart: elem.chart
+            });
+          });
+
+        });
+
       }).error(function(err){
         cb(err);
       })

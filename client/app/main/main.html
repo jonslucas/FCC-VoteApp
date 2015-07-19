@@ -3,8 +3,23 @@
   Toggle Dashboard
 </div>
 <user-dashboard ng-show="showDash"></user-dashboard>
-<div ng-hide="showDash" class="polls" ng-repeat="poll in polls">
-  {{poll}}
-  <poll data="poll"></poll>
+<div ng-hide="showDash" class="polls text-center" ng-repeat="poll in polls">
+  <div class="wrap" ng-class-odd="'right'" ng-class-even="'left'">
+    <h4 ng-class-odd="'text-right'" ng-class-even="'text-left'"><em>Asked By: {{poll.poll.author.name||'Anon'}}</em></h4>
+    <poll data="poll"></poll>
+  </div>
+  <div class="wrap" ng-class-odd="'left'" ng-class-even="'right'">
+    <h4>
+      <ul>
+        <li ng-repeat="choice in poll.poll.choices track by $index">
+          {{choice.choice}}
+        </li>
+      </ul>
+    </h4>
+    <h3>Comments:</h3>
+    <div ng-repeat="comment in poll.poll.comments track by $index">
+
+    </div>
+  </div>
 </div>
 
