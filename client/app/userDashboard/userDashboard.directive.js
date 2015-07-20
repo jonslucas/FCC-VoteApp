@@ -31,7 +31,10 @@ var dashCtrl = function(Polls) {
     });
   };
   ctrl.addChoice = function() {
-    ctrl.choices.push({name:''});
+    if(ctrl.choices.length<9){
+      ctrl.choices.push({name:''});
+    }
+
   };
   ctrl.removeChoice= function(ind) {
     ctrl.choices.splice(ind,1);

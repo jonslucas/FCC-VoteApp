@@ -3,6 +3,7 @@
   border-top: .1em solid black;
   border-bottom: .1em solid black;
   display: block;
+  padding-bottom: 5.5%;
   height: 35em;
   margin-bottom: .9em;
 }
@@ -15,5 +16,15 @@
   float: left;
   border-left: .1em solid black;
   display: inline-block;
+}
+.choice {
+  width: 75%;
+  height: 75%;
+  margin-left: auto;
+  margin-right: auto;
+}
+.choice label.form-control {
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
 

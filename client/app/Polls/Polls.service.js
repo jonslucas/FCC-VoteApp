@@ -21,7 +21,7 @@ angular.module('basejumpsApp')
       return data.map(function (poll) {
         var chart = {
           labels: [],
-          data: [3, 9]
+          data: []
         };
         poll.choices.forEach(function (choice) {
           chart.labels.push(choice.choice);
@@ -63,6 +63,7 @@ angular.module('basejumpsApp')
     return {
 
       vote: function(poll, cb) {
+
         $http.put('/api/polls/', poll)
           .success(function (resp) {
           cb(null, resp);

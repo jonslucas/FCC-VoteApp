@@ -6,18 +6,25 @@
 <div ng-hide="showDash" class="polls text-center" ng-repeat="poll in polls">
   <div class="wrap" ng-class-odd="'right'" ng-class-even="'left'">
     <h4 ng-class-odd="'text-right'" ng-class-even="'text-left'"><em>Asked By: {{poll.poll.author.name||'Anon'}}</em></h4>
-    <poll data="poll"></poll>
+    <poll ng-show="poll.voted" data="poll"></poll>
+    <div ng-hide="poll.voted">
+      <h4>
+        Q: {{poll.poll.question}}
+        <div class="choice" >
+          <label ng-repeat="choice in poll.poll.choices" class="form-control text-left" >
+            <input type="radio" name="choices" ng-model="voteChoice.name" value="{{$index}}">
+            {{choice.choice}}
+          </label>
+        </div>
+      </h4>
+      <div class="btn btn-success" ng-click="vote($index)">VOTE!</div>
+    </div>
+
   </div>
   <div class="wrap" ng-class-odd="'left'" ng-class-even="'right'">
-    <h4>
-      <ul>
-        <li ng-repeat="choice in poll.poll.choices track by $index">
-          {{choice.choice}}
-        </li>
-      </ul>
-    </h4>
+
     <h3>Comments:</h3>
-    <div ng-repeat="comment in poll.poll.comments track by $index">
+    <div ng-repeat="comment in poll.poll.comments">
 
     </div>
   </div>
