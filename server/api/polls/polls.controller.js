@@ -41,12 +41,12 @@ exports.create = function(req, res) {
 
 // Updates an existing polls in the DB.
 exports.update = function(req, res) {
-  console.log('req.body: '+JSON.stringify(req.body));
   if(req.body._id) { delete req.body._id; }
   Polls.findById(req.params.id, function (err, polls) {
     if (err) { return handleError(res, err); }
     if(!polls) { return res.send(404); }
     var updated = _.merge(polls, req.body);
+    updated.choices = req.body.choices;
     updated.save(function (err) {
       if (err) { return handleError(res, err); }
       return res.json(200, polls);

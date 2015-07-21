@@ -10,7 +10,7 @@ var PollsSchema = new Schema({
     ref: 'User'
   },
   choices: [{choice:String,votes: Number}],
-  voters: [String],
+  voters: [{ type: Schema.Types.ObjectId, ref: 'User'}],
   comments: [{
     type: Schema.Types.ObjectId,
     ref: 'Comments'

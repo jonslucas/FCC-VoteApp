@@ -14,8 +14,11 @@ angular.module('basejumpsApp')
           choice = poll.poll.choices[$scope.voteChoice.name];
         choice.votes += 1;
         poll.chart.data[$scope.voteChoice.name]+=1;
-        poll.voted=true;
-        console.log('poll: '+JSON.stringify(poll));
+        poll.poll.voted=true;
+        Polls.vote(poll, function(err, resp) {
+          if(err){ return console.error(err); }
+          console.log('response: '+JSON.stringify(resp));
+        });
       }
 
     };

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('basejumpsApp')
-  .factory('Polls', ['$http', function ($http) {
+  .factory('Polls', ['$http', 'Auth', function ($http, Auth) {
     var p = {};
 
     var get_comments = function(id, cb){
@@ -63,10 +63,13 @@ angular.module('basejumpsApp')
     return {
 
       vote: function(poll, cb) {
-
-        $http.put('/api/polls/', poll)
+        if(poll.poll.voted) { delete poll.poll.voted; }
+        poll.poll.voters.push(Auth.getCurrentUser()._id);
+        console.log('choices: '+JSON.stringify(poll.poll.choices));
+        //console.log('poll: '+JSON.stringify(poll));
+        $http.put('/api/polls/'+poll.poll._id, poll.poll)
           .success(function (resp) {
-          cb(null, resp);
+          cb(null, parsePoll(resp));
         }).error(function (err) {
           cb(err);
         })
