@@ -23,10 +23,15 @@ angular.module('basejumpsApp')
           labels: [],
           data: []
         };
+        var user = Auth.getCurrentUser()._id;
         poll.choices.forEach(function (choice) {
           chart.labels.push(choice.choice);
           chart.data.push(choice.votes);
         });
+        poll.voted = poll.voters.reduce(function(acc, curr) {
+          if(curr===user) return true;
+          else return acc;
+        }, false)
         return {
           poll: poll,
           chart: chart
@@ -69,7 +74,7 @@ angular.module('basejumpsApp')
         //console.log('poll: '+JSON.stringify(poll));
         $http.put('/api/polls/'+poll.poll._id, poll.poll)
           .success(function (resp) {
-          cb(null, parsePoll(resp));
+          cb(null, parsePoll([resp]));
         }).error(function (err) {
           cb(err);
         })

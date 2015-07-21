@@ -18,6 +18,7 @@ angular.module('basejumpsApp')
         Polls.vote(poll, function(err, resp) {
           if(err){ return console.error(err); }
           console.log('response: '+JSON.stringify(resp));
+          $scope.polls[pollInd] = resp[0];
         });
       }
 

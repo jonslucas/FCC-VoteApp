@@ -47,6 +47,9 @@ exports.update = function(req, res) {
     if(!polls) { return res.send(404); }
     var updated = _.merge(polls, req.body);
     updated.choices = req.body.choices;
+    //updated.voters = req.body.voters;
+    console.log('updated: '+JSON.stringify(updated));
+    updated.author= null;
     updated.save(function (err) {
       if (err) { return handleError(res, err); }
       return res.json(200, polls);
