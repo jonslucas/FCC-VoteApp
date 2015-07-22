@@ -17,7 +17,9 @@ angular.module('basejumpsApp')
         poll.poll.voted=true;
         Polls.vote(poll, function(err, resp) {
           if(err){ return console.error(err); }
-          console.log('response: '+JSON.stringify(resp));
+          resp[0].poll.author = poll.poll.author;
+          //console.log('author to set: '+JSON.stringify(poll.poll.author));
+          //console.log('response: '+JSON.stringify(resp));
           $scope.polls[pollInd] = resp[0];
         });
       }
@@ -29,7 +31,6 @@ angular.module('basejumpsApp')
     var getComm = function() {
       Polls.loadCommunity(function(err, resp){
         if(err){return console.error(err);}
-        resp.poll.voted=false;
         $scope.polls.push(resp);
       });
     };

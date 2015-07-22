@@ -31,7 +31,7 @@ angular.module('basejumpsApp')
         poll.voted = poll.voters.reduce(function(acc, curr) {
           if(curr===user) return true;
           else return acc;
-        }, false)
+        }, false);
         return {
           poll: poll,
           chart: chart
@@ -70,8 +70,11 @@ angular.module('basejumpsApp')
       vote: function(poll, cb) {
         if(poll.poll.voted) { delete poll.poll.voted; }
         poll.poll.voters.push(Auth.getCurrentUser()._id);
-        console.log('choices: '+JSON.stringify(poll.poll.choices));
+        //console.log('choices: '+JSON.stringify(poll.poll.choices));
         //console.log('poll: '+JSON.stringify(poll));
+        //console.log('author: '+JSON.stringify(poll.poll.author));
+        //console.log('authorId: '+poll.poll.author.id);
+        //poll.poll.author = poll.poll.author._id;
         $http.put('/api/polls/'+poll.poll._id, poll.poll)
           .success(function (resp) {
           cb(null, parsePoll([resp]));

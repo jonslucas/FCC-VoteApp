@@ -5,6 +5,7 @@
 <user-dashboard ng-show="showDash"></user-dashboard>
 <div ng-hide="showDash" class="polls text-center" ng-repeat="poll in polls">
   <div class="wrap" ng-class-odd="'right'" ng-class-even="'left'">
+    {{poll.poll.voted}}
     <h4 ng-class-odd="'text-right'" ng-class-even="'text-left'"><em>Asked By: {{poll.poll.author.name||'Anon'}}</em></h4>
     <poll ng-show="poll.poll.voted" data="poll"></poll>
     <div ng-hide="poll.poll.voted">
