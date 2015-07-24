@@ -41,22 +41,28 @@ exports.create = function(req, res) {
 
 // Updates an existing polls in the DB.
 exports.update = function(req, res) {
-  console.log('req.params.id: '+req.params.id);
 
-  if(req.body._id) { console.log('body._id: '+req.body._id); delete req.body._id; }
+
+  if(req.body._id) { delete req.body._id; }
   Polls.findById(req.params.id, function (err, polls) {
     if (err) { return handleError(res, err); }
     if(!polls) { return res.send(404); }
-    console.log('response from find: '+JSON.stringify(polls));
+
     //var updated = _.merge(polls, req.body);
-    var extended = _.extend(polls, req.body);
-    console.log('poll passed in: '+JSON.stringify(req.body));
-    console.log('extended: '+JSON.stringify(extended));
-    console.log('author(req.body): '+JSON.stringify(req.body.author));
-    extended.save(function (err) {
+    //var extended = _.extend(polls, req.body);
+    polls.choices = req.body.choices;
+    var voters = _.merge(polls.voters, req.body.voters);
+    console.log('voters: '+JSON.stringify(voters));
+    polls.voters = _.extend(polls.voters, req.body.voters);
+    console.log('poll before save: '+JSON.stringify(polls));
+    polls.save(function (err) {
       if (err) { return handleError(res, err); }
       return res.json(200, polls);
     });
+    //extended.save(function (err) {
+    //  if (err) { return handleError(res, err); }
+    //  return res.json(200, polls);
+    //});
   });
 };
 
