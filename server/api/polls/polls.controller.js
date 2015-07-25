@@ -20,7 +20,7 @@ exports.show = function(req, res) {
   });
 };
 //Get own polls for authenticated user
-exports.getBatch = function(req, res) {
+exports.getAuthedBatch = function(req, res) {
   Polls.find({author:req.user._id}, function(err, polls){
     if(err) { return handleError(res, err); }
     if(!polls) { return res.send(404); }
@@ -41,28 +41,15 @@ exports.create = function(req, res) {
 
 // Updates an existing polls in the DB.
 exports.update = function(req, res) {
-
-
   if(req.body._id) { delete req.body._id; }
   Polls.findById(req.params.id, function (err, polls) {
     if (err) { return handleError(res, err); }
     if(!polls) { return res.send(404); }
-
-    //var updated = _.merge(polls, req.body);
-    //var extended = _.extend(polls, req.body);
-    polls.choices = req.body.choices;
-    var voters = _.merge(polls.voters, req.body.voters);
-    console.log('voters: '+JSON.stringify(voters));
-    polls.voters = _.extend(polls.voters, req.body.voters);
-    console.log('poll before save: '+JSON.stringify(polls));
-    polls.save(function (err) {
+    var extended = _.extend(polls, req.body);
+    extended.save(function (err) {
       if (err) { return handleError(res, err); }
       return res.json(200, polls);
     });
-    //extended.save(function (err) {
-    //  if (err) { return handleError(res, err); }
-    //  return res.json(200, polls);
-    //});
   });
 };
 

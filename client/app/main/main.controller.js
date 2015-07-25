@@ -17,10 +17,7 @@ angular.module('basejumpsApp')
         poll.poll.voted=true;
         Polls.vote(poll, function(err, resp) {
           if(err){ return console.error(err); }
-          resp[0].poll.author = poll.poll.author;
-          //console.log('author to set: '+JSON.stringify(poll.poll.author));
-          //console.log('response: '+JSON.stringify(resp));
-          $scope.polls[pollInd] = resp[0];
+          $scope.polls[pollInd] = resp;
         });
       }
 

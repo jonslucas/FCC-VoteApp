@@ -17,8 +17,7 @@ angular.module('basejumpsApp')
       //cb(null, 'None');
     };
 
-    var parsePoll = function(data) {
-      return data.map(function (poll) {
+    var parsePoll = function (poll) {
         var chart = {
           labels: [],
           data: []
@@ -36,7 +35,6 @@ angular.module('basejumpsApp')
           poll: poll,
           chart: chart
         };
-      });
     };
 
     var get_polls = function(id, cb){
@@ -48,7 +46,7 @@ angular.module('basejumpsApp')
         config.params = {id: id};
       }
       $http(config).success(function(data){
-        var parsed = parsePoll(data);
+        var parsed = data.map(parsePoll);
         var output = parsed.map(function(elem){
           get_comments(elem.poll._id, function(err, resp){
             if(err){ return console.error(err); }
@@ -70,14 +68,17 @@ angular.module('basejumpsApp')
       vote: function(poll, cb) {
         if(poll.poll.voted) { delete poll.poll.voted; }
         poll.poll.voters.push(Auth.getCurrentUser()._id);
-        //console.log('choices: '+JSON.stringify(poll.poll.choices));
-        //console.log('poll: '+JSON.stringify(poll));
-        //console.log('author: '+JSON.stringify(poll.poll.author));
-        //console.log('authorId: '+poll.poll.author.id);
-        //poll.poll.author = poll.poll.author._id;
+        if(poll.poll.author) {
+          var auth = poll.poll.author;
+          poll.poll.author = auth._id;
+        }
+
         $http.put('/api/polls/'+poll.poll._id, poll.poll)
           .success(function (resp) {
-          cb(null, parsePoll([resp]));
+            if(auth){
+              resp.author=auth;
+            }
+          cb(null, parsePoll(resp));
         }).error(function (err) {
           cb(err);
         })
@@ -112,7 +113,7 @@ angular.module('basejumpsApp')
           method:'get',
           url: '/api/polls/user/'
         }).success(function(data){
-          cb(null, parsePoll(data));
+          cb(null, data.map(parsePoll));
         }).error(function(err){
           cb(err);
         });
