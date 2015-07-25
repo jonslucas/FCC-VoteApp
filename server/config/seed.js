@@ -5,30 +5,9 @@
 
 'use strict';
 
-var Thing = require('../api/thing/thing.model');
 var User = require('../api/user/user.model');
+var Polls = require('../api/polls/polls.model');
 
-Thing.find({}).remove(function() {
-  Thing.create({
-    name : 'Development Tools',
-    info : 'Integration with popular tools such as Bower, Grunt, Karma, Mocha, JSHint, Node Inspector, Livereload, Protractor, Jade, Stylus, Sass, CoffeeScript, and Less.'
-  }, {
-    name : 'Server and Client integration',
-    info : 'Built with a powerful and fun stack: MongoDB, Express, AngularJS, and Node.'
-  }, {
-    name : 'Smart Build System',
-    info : 'Build system ignores `spec` files, allowing you to keep tests alongside code. Automatic injection of scripts and styles into your index.html'
-  },  {
-    name : 'Modular Structure',
-    info : 'Best practice client and server structures allow for more code reusability and maximum scalability'
-  },  {
-    name : 'Optimized Build',
-    info : 'Build process packs up your templates as a single JavaScript payload, minifies your scripts/css/images, and rewrites asset names for caching.'
-  },{
-    name : 'Deployment Ready',
-    info : 'Easily deploy your app to Heroku or Openshift with the heroku and openshift subgenerators'
-  });
-});
 
 User.find({}).remove(function() {
   User.create({
@@ -44,6 +23,33 @@ User.find({}).remove(function() {
     password: 'admin'
   }, function() {
       console.log('finished populating users');
+
+      Polls.find({}).remove(function () {
+        User.find({email: 'admin@admin.com'}, function(err, resp){
+          if(err) { return console.error(err); }
+          console.log('resp: '+JSON.stringify(resp));
+          Polls.create({
+            provider: 'local',
+            question: 'test1',
+            author: resp[0]._id,
+            choices: [{"choice":1,"votes":3,},{"choice":3,"votes":1,}]
+          }, {
+            provider: 'local',
+            question: 'test2',
+            author: resp[0]._id,
+            choices: [{"choice":9,"votes":5,},{"choice":81,"votes":7,}]
+          }, function(err, resp){
+            console.log('err: '+err);
+            console.log('response: '+resp);
+            console.log('finished adding polls');
+          });
+
+        });
+
+
+      });
     }
   );
 });
+
+

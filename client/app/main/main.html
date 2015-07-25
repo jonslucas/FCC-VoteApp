@@ -23,8 +23,15 @@
   </div>
   <div class="wrap" ng-class-odd="'left'" ng-class-even="'right'">
 
-    <h3>Comments:</h3>
-    <div ng-repeat="comment in poll.poll.comments">
+    <h3>Comments</h3>
+    <div class="commBtns">
+      <div class="refresh btn btn-primary" ng-click="getComments($index)"><i class="fa fa-refresh fa3x"></i></div>
+      <div class="refresh btn btn-default" ng-click="comment($index)"><i class="fa fa-pencil-square-o fa3x"></i></div>
+    </div>
+    <div class="commentDiv">
+      <div ng-repeat="comment in poll.poll.comments">
+    </div>
+
 
     </div>
   </div>
