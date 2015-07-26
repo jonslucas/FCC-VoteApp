@@ -7,14 +7,13 @@ angular.module('basejumpsApp')
     var get_comments = function(id, cb){
       $http({
         method:'get',
-        url: '/api/comments/',
+        url: '/api/comments/'+id,
         params:{id: id}
       }).success(function(data){
         cb(null, data);
       }).error(function(err){
         cb(err);
       });
-      //cb(null, 'None');
     };
 
     var parsePoll = function (poll) {
@@ -37,12 +36,14 @@ angular.module('basejumpsApp')
         };
     };
 
+
     var get_polls = function(id, cb){
       var config= {
         method: 'get',
         url: '/api/polls/'
       };
       if(id){
+        config.url += id;
         config.params = {id: id};
       }
       $http(config).success(function(data){
@@ -63,6 +64,23 @@ angular.module('basejumpsApp')
         cb(err);
       })
     };
+
+
+    var update_poll = function(poll, cb) {
+      $http.put('/api/polls/'+poll.poll._id, poll.poll)
+        .success(function (resp) {
+          //if(auth){
+          //  resp.author=auth;
+          //}
+          get_polls(resp._id, function(err, poll) {
+            if(err) { cb(err); }
+            cb(null, poll);
+          });
+        }).error(function (err) {
+          cb(err);
+        })
+    };
+
     return {
 
       vote: function(poll, cb) {
@@ -72,16 +90,8 @@ angular.module('basejumpsApp')
           var auth = poll.poll.author;
           poll.poll.author = auth._id;
         }
+        update_poll(poll, cb);
 
-        $http.put('/api/polls/'+poll.poll._id, poll.poll)
-          .success(function (resp) {
-            if(auth){
-              resp.author=auth;
-            }
-          cb(null, parsePoll(resp));
-        }).error(function (err) {
-          cb(err);
-        })
       },
 
       createPoll: function (poll, cb) {
@@ -125,6 +135,23 @@ angular.module('basejumpsApp')
 
       getPoll: function (id, cb) {
         return get_polls(id, cb);
+      },
+
+      getComms : function(id, cb) {
+        return get_comments(id, cb);
+      },
+
+      createComm : function(poll, cb) {
+        poll.comment.author = Auth.getCurrentUser()._id;
+        $http.post('/api/comments/', poll.comment)
+          .success(function(resp){
+            poll.poll.comments.push(resp._id);
+            update_poll(poll, cb);
+          })
+          .error(function(err){
+            cb(err);
+          });
       }
+
     };
   }]);

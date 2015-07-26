@@ -13,7 +13,7 @@ exports.index = function(req, res) {
 
 // Get a single polls
 exports.show = function(req, res) {
-  Polls.findById(req.params.id, function (err, polls) {
+  Polls.loadPoll(req.params.id, function (err, polls) {
     if(err) { return handleError(res, err); }
     if(!polls) { return res.send(404); }
     return res.json(polls);
@@ -47,7 +47,7 @@ exports.update = function(req, res) {
     if(!polls) { return res.send(404); }
     var extended = _.extend(polls, req.body);
     extended.save(function (err) {
-      if (err) { return handleError(res, err); }
+      if (err) { console.log(err); return handleError(res, err); }
       return res.json(200, polls);
     });
   });

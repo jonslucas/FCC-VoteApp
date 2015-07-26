@@ -7,6 +7,7 @@
 
 var User = require('../api/user/user.model');
 var Polls = require('../api/polls/polls.model');
+var Comments = require('../api/comments/comments.model');
 
 
 User.find({}).remove(function() {
@@ -42,6 +43,9 @@ User.find({}).remove(function() {
             console.log('err: '+err);
             console.log('response: '+resp);
             console.log('finished adding polls');
+            Comments.find({}).remove(function() {
+              console.log('removed all comments');
+            })
           });
 
         });

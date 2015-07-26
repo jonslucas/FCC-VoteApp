@@ -5,7 +5,7 @@ var Comments = require('./comments.model');
 
 // Get list of comments for a poll
 exports.getPollComs = function (req, res) {
-  Comments.find({poll: req.params.id }, function (err, comments) {
+  Comments.getComment(req.params.id, function (err, comments) {
     if(err) { return handleError(res, err); }
     return res.json(200, comments);
   })

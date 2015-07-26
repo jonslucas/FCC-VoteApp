@@ -26,6 +26,11 @@ PollsSchema.statics = {
       .sort('-created_date')
       .limit(50)
       .exec(cb);
+  },
+  loadPoll: function(id, cb) {
+    this.find({_id: id})
+      .populate({path:'author', select: 'name'})
+      .exec(cb);
   }
 };
 
