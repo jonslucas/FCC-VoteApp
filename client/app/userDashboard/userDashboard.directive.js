@@ -19,12 +19,11 @@ var dashCtrl = function(Polls) {
   ctrl.getOwn = function() {
     ctrl.showCreate = false;
     ctrl.showOwn = true;
-    Polls.getUserPolls(function(err, data){
+    Polls.getOwnPolls(function(err, data){
       if(err){ return console.error(err); }
       ctrl.polls = data.map(function(d){
         return {
-          question: d.poll.question,
-          createdOn: d.created_date,
+          poll: d.poll,
           chart: d.chart
         };
       })

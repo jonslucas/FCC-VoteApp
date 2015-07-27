@@ -2,6 +2,7 @@
 
 var _ = require('lodash');
 var Polls = require('./polls.model');
+var User = require('../user/user.model');
 
 // Get list of polls
 exports.index = function(req, res) {
@@ -20,11 +21,29 @@ exports.show = function(req, res) {
   });
 };
 //Get own polls for authenticated user
-exports.getAuthedBatch = function(req, res) {
-  Polls.find({author:req.user._id}, function(err, polls){
-    if(err) { return handleError(res, err); }
-    if(!polls) { return res.send(404); }
-    return res.json(polls);
+exports.getUserBatch = function(req, res) {
+  User.find({name: req.params.user}, function(err, user){
+    if(err) { return console.error(err); }
+    if(!user) { return res.send(404); }
+    Polls.find({author:user[0]._id}, function(err, polls){
+      if(err) { return handleError(res, err); }
+      if(!polls) { return res.send(404); }
+      polls.author = {_id: user[0]._id, name: user[0].name};
+      return res.json(polls);
+    });
+  });
+
+};
+
+exports.getUserPoll = function(req, res) {
+  User.find({name: req.params.user}, function (err, user) {
+    if(err) { return console.error(err); }
+    if(!user) { return res.send(404); }
+    Polls.loadPollByUserQuestion(user[0]._id, req.params.poll, function (err, poll) {
+      if(err) { return handleError(res, err); }
+      if(!poll) { return res.send(404); }
+      return res.json(poll);
+    });
   });
 };
 

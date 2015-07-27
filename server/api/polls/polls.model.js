@@ -31,6 +31,11 @@ PollsSchema.statics = {
     this.find({_id: id})
       .populate({path:'author', select: 'name'})
       .exec(cb);
+  },
+  loadPollByUserQuestion: function(userId, question, cb) {
+    this.find({author: userId, question: question})
+      .populate({path:'author', select: 'name'})
+      .exec(cb);
   }
 };
 

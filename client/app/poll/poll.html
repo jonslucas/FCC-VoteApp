@@ -1,7 +1,19 @@
-<div>
+<div ng-show="poll.poll.voted">
   <h3>{{poll.question||poll.poll.question}}</h3>
 
   <canvas id="doughnut" class="chart chart-doughnut" data="poll.chart.data" labels="poll.chart.labels" legend="true">
 
   </canvas>
+</div>
+<div ng-hide="poll.poll.voted">
+  <h4>
+    Q: {{poll.poll.question}}
+    <div class="choice" >
+      <label ng-repeat="choice in poll.poll.choices" class="form-control text-left" >
+        <input type="radio" name="choices" ng-model="ctrl.voteChoice.name" value="{{$index}}">
+        {{choice.choice}}
+      </label>
+    </div>
+  </h4>
+  <div class="btn btn-success" ng-click="ctrl.vote()">VOTE!</div>
 </div>

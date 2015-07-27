@@ -37,14 +37,18 @@ angular.module('basejumpsApp')
     };
 
 
-    var get_polls = function(id, cb){
+    var get_polls = function(id,name, cb){
       var config= {
         method: 'get',
         url: '/api/polls/'
       };
-      if(id){
-        config.url += id;
-        config.params = {id: id};
+      if(arguments.length===2){
+        cb = name;
+      } else {
+        config.url += name;
+      }
+      if(id) {
+        config.url += '/'+id;
       }
       $http(config).success(function(data){
         var parsed = data.map(parsePoll);
@@ -67,12 +71,16 @@ angular.module('basejumpsApp')
 
 
     var update_poll = function(poll, cb) {
+      if(poll.poll.author.name) {
+        var auth = poll.poll.author;
+        poll.poll.author = auth._id;
+      }
       $http.put('/api/polls/'+poll.poll._id, poll.poll)
         .success(function (resp) {
           //if(auth){
           //  resp.author=auth;
           //}
-          get_polls(resp._id, function(err, poll) {
+          get_polls(resp.question,auth.name, function(err, poll) {
             if(err) { cb(err); }
             cb(null, poll);
           });
@@ -86,10 +94,6 @@ angular.module('basejumpsApp')
       vote: function(poll, cb) {
         if(poll.poll.voted) { delete poll.poll.voted; }
         poll.poll.voters.push(Auth.getCurrentUser()._id);
-        if(poll.poll.author) {
-          var auth = poll.poll.author;
-          poll.poll.author = auth._id;
-        }
         update_poll(poll, cb);
 
       },
@@ -109,8 +113,7 @@ angular.module('basejumpsApp')
       deletePolls: function (id, cb) {
         $http({
           method: 'delete',
-          url: '/api/polls/',
-          data: id
+          url: '/api/polls/'+id
         }).success(function (data) {
           cb(null, data);
         }).error(function (err) {
@@ -118,10 +121,26 @@ angular.module('basejumpsApp')
         })
       },
 
-      getUserPolls: function(cb) {
+      getUserPoll: function (name, poll,  cb) {
+        var config = {
+          method: 'get',
+          url: 'api/polls/'+name
+        };
+        if(arguments.length===2) {
+          cb = poll;
+        } else { config.url += '/'+poll; }
+        $http(config)
+          .success(function(data){
+          cb(null, data);
+        }).error(function(err){
+          cb(err);
+        })
+      },
+
+      getOwnPolls: function(cb) {
         $http({
           method:'get',
-          url: '/api/polls/user/'
+          url: '/api/polls/'+Auth.getCurrentUser().name
         }).success(function(data){
           cb(null, data.map(parsePoll));
         }).error(function(err){
@@ -131,10 +150,6 @@ angular.module('basejumpsApp')
 
       loadCommunity: function (cb) {
         return get_polls(null, cb);
-      },
-
-      getPoll: function (id, cb) {
-        return get_polls(id, cb);
       },
 
       getComms : function(id, cb) {

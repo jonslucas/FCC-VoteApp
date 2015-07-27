@@ -28,7 +28,6 @@ User.find({}).remove(function() {
       Polls.find({}).remove(function () {
         User.find({email: 'admin@admin.com'}, function(err, resp){
           if(err) { return console.error(err); }
-          console.log('resp: '+JSON.stringify(resp));
           Polls.create({
             provider: 'local',
             question: 'test1',
@@ -40,8 +39,6 @@ User.find({}).remove(function() {
             author: resp[0]._id,
             choices: [{"choice":9,"votes":5,},{"choice":81,"votes":7,}]
           }, function(err, resp){
-            console.log('err: '+err);
-            console.log('response: '+resp);
             console.log('finished adding polls');
             Comments.find({}).remove(function() {
               console.log('removed all comments');

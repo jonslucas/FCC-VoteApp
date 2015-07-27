@@ -6,19 +6,7 @@
 <div ng-hide="showDash" class="polls text-center" ng-repeat="poll in polls">
   <div class="wrap" ng-class-odd="'right'" ng-class-even="'left'">
     <h4 ng-class-odd="'text-right'" ng-class-even="'text-left'"><em>Asked By: {{poll.poll.author.name||'Anon'}}</em></h4>
-    <poll ng-show="poll.poll.voted" data="poll"></poll>
-    <div ng-hide="poll.poll.voted">
-      <h4>
-        Q: {{poll.poll.question}}
-        <div class="choice" >
-          <label ng-repeat="choice in poll.poll.choices" class="form-control text-left" >
-            <input type="radio" name="choices" ng-model="voteChoice.name" value="{{$index}}">
-            {{choice.choice}}
-          </label>
-        </div>
-      </h4>
-      <div class="btn btn-success" ng-click="vote($index)">VOTE!</div>
-    </div>
+    <poll data="poll"></poll>
 
   </div>
   <div class="wrap" ng-class-odd="'left'" ng-class-even="'right'">
