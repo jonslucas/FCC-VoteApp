@@ -12,14 +12,7 @@ var dashCtrl = function(Polls) {
   ];
   ctrl.showCreate = false;
   ctrl.showOwn = true;
-  ctrl.deletePoll = function(ind) {
-    var poll = ctrl.polls[ind];
-    if(window.confirm())
-    Polls.deletePolls(poll.poll._id, function (err, resp) {
-      if(err) { return console.error(err); }
-      console.log('resp: '+JSON.stringify(resp));
-    });
-  };
+
   ctrl.getCreate = function() {
     ctrl.showOwn=false;
     ctrl.showCreate=true;
@@ -36,6 +29,16 @@ var dashCtrl = function(Polls) {
         };
       })
     });
+  };
+  ctrl.deletePoll = function(ind) {
+    var poll = ctrl.polls[ind];
+    if(window.confirm('Are you sure you want to delete this poll?')) {
+      Polls.deletePolls(poll.poll._id, function (err, resp) {
+        if(err) { return console.error(err); }
+        ctrl.getOwn();
+      });
+    }
+
   };
   ctrl.addChoice = function() {
     if(ctrl.choices.length<9){

@@ -5,7 +5,6 @@ angular.module('basejumpsApp')
     var p = {};
 
     var get_comments = function(id, cb){
-      console.log('params: '+JSON.stringify(id));
       $http({
         method:'get',
         url: '/api/comments/'+id
@@ -18,23 +17,28 @@ angular.module('basejumpsApp')
     };
 
     var parse_poll = function (poll) {
-        var chart = {
-          labels: [],
-          data: []
-        };
-        var user = Auth.getCurrentUser()._id;
-        poll.choices.forEach(function (choice) {
-          chart.labels.push(choice.choice);
-          chart.data.push(choice.votes);
-        });
-        poll.voted = poll.voters.reduce(function(acc, curr) {
-          if(curr===user) return true;
-          else return acc;
-        }, false);
-        return {
-          poll: poll,
-          chart: chart
-        };
+      var chart = {
+        labels: [],
+        data: []
+      };
+      var user = Auth.getCurrentUser()._id;
+      poll.choices.forEach(function (choice) {
+        chart.labels.push(choice.choice);
+        chart.data.push(choice.votes);
+      });
+      poll.voted = poll.voters.reduce(function(acc, curr) {
+        if(curr===user) return true;
+        else return acc;
+      }, false);
+      //console.log('user: '+user);
+      //console.log('author: '+poll.author);
+
+      if(user === (poll.author||poll.author._id)) poll.voted = true;
+
+      return {
+        poll: poll,
+        chart: chart
+      };
     };
 
 

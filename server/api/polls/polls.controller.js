@@ -25,10 +25,13 @@ exports.getUserBatch = function(req, res) {
   User.find({name: req.params.user}, function(err, user){
     if(err) { return console.error(err); }
     if(!user) { return res.send(404); }
-    Polls.find({author:user[0]._id}, function(err, polls){
+    var auth = user[0];
+    Polls.find({author:auth._id}, function(err, polls){
       if(err) { return handleError(res, err); }
       if(!polls) { return res.send(404); }
-      polls.author = {_id: user[0]._id, name: user[0].name};
+      polls.map(function(poll){
+        poll.author = {_id: user[0]._id, name: user[0].name};
+      });
       return res.json(polls);
     });
   });
