@@ -9,3 +9,11 @@
 .showBtns {
   margin-bottom: 1em;
 }
+.poll i {
+  margin-left: 85%;
+  visibility: hidden;
+}
+.poll:hover > i {
+  visibility: visible;
+}
+

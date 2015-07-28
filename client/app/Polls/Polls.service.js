@@ -5,18 +5,19 @@ angular.module('basejumpsApp')
     var p = {};
 
     var get_comments = function(id, cb){
+      console.log('params: '+JSON.stringify(id));
       $http({
         method:'get',
-        url: '/api/comments/'+id,
-        params:{id: id}
+        url: '/api/comments/'+id
       }).success(function(data){
+        console.log('success: '+JSON.stringify(data));
         cb(null, data);
       }).error(function(err){
         cb(err);
       });
     };
 
-    var parsePoll = function (poll) {
+    var parse_poll = function (poll) {
         var chart = {
           labels: [],
           data: []
@@ -46,12 +47,12 @@ angular.module('basejumpsApp')
         cb = name;
       } else {
         config.url += name;
-      }
-      if(id) {
-        config.url += '/'+id;
+        if(id) {
+          config.url += '/'+id;
+        }
       }
       $http(config).success(function(data){
-        var parsed = data.map(parsePoll);
+        var parsed = data.map(parse_poll);
         var output = parsed.map(function(elem){
           get_comments(elem.poll._id, function(err, resp){
             if(err){ return console.error(err); }
@@ -71,16 +72,16 @@ angular.module('basejumpsApp')
 
 
     var update_poll = function(poll, cb) {
-      if(poll.poll.author.name) {
-        var auth = poll.poll.author;
-        poll.poll.author = auth._id;
-      }
+      //if(poll.poll.author.name) {
+      //  var auth = poll.poll.author;
+      //  poll.poll.author = auth._id;
+      //}
       $http.put('/api/polls/'+poll.poll._id, poll.poll)
         .success(function (resp) {
           //if(auth){
           //  resp.author=auth;
           //}
-          get_polls(resp.question,auth.name, function(err, poll) {
+          get_polls(resp.question,poll.poll.author.name, function(err, poll) {
             if(err) { cb(err); }
             cb(null, poll);
           });
@@ -131,7 +132,7 @@ angular.module('basejumpsApp')
         } else { config.url += '/'+poll; }
         $http(config)
           .success(function(data){
-          cb(null, data);
+          cb(null, parse_poll(data[0]));
         }).error(function(err){
           cb(err);
         })
@@ -140,9 +141,10 @@ angular.module('basejumpsApp')
       getOwnPolls: function(cb) {
         $http({
           method:'get',
-          url: '/api/polls/'+Auth.getCurrentUser().name
+          url: '/api/polls/'+Auth.getCurrentUser().name,
+          data: {batch: true}
         }).success(function(data){
-          cb(null, data.map(parsePoll));
+          cb(null, data.map(parse_poll));
         }).error(function(err){
           cb(err);
         });

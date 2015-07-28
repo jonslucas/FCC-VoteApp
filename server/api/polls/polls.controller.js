@@ -64,7 +64,9 @@ exports.update = function(req, res) {
   Polls.findById(req.params.id, function (err, polls) {
     if (err) { return handleError(res, err); }
     if(!polls) { return res.send(404); }
+    delete req.body.author;
     var extended = _.extend(polls, req.body);
+    console.log('extended: '+JSON.stringify(extended));
     extended.save(function (err) {
       if (err) { console.log(err); return handleError(res, err); }
       return res.json(200, polls);

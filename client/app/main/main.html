@@ -11,23 +11,7 @@
   </div>
   <div class="wrap" ng-class-odd="'left'" ng-class-even="'right'">
 
-    <h3>Comments</h3>
-    <div class="commBtns">
-      <div class="refresh btn btn-primary" ng-click="getComments($index)"><i class="fa fa-refresh fa3x"></i></div>
-      <div class="refresh btn btn-default" ng-click="createComment()"><i class="fa fa-pencil-square-o fa3x"></i></div>
-    </div>
-    <div class="createCommDiv" ng-show="showCreateComm">
-
-      <input type="text" ng-model="inputComment" />
-      <div class="btn btn-success" ng-click="postComment($index, inputComment)">Submit</div>
-    </div>
-    <div class="commentDiv">
-
-      <div ng-repeat="comment in poll.comments">
-        {{comment.body}}
-        {{comment.author.name}}
-
-    </div>
+  <comments data="poll"></comments>
 
 
     </div>

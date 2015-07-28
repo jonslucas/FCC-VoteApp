@@ -11,7 +11,8 @@
 
 
   <div ng-show="dCtrl.showOwn" >
-    <div ng-repeat="poll in dCtrl.polls | orderBy:'-createdOn'">
+    <div class="poll" ng-repeat="poll in dCtrl.polls | orderBy:'-createdOn'">
+      <i class="fa fa-close fa-5x" ng-click="dCtrl.deletePoll($index)"></i>
       <poll data="poll"></poll>
 
     </div>
