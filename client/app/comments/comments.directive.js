@@ -7,7 +7,7 @@ var commCtrl = function($scope, Polls) {
     Polls.getComms(poll.poll._id, function(err, resp){
       if(err) { return console.error(err); }
       ctrl.comments = resp;
-      console.log('getComments poll: '+JSON.stringify($scope.poll));
+
     })
   };
   ctrl.getComments($scope.poll);
@@ -23,11 +23,8 @@ var commCtrl = function($scope, Polls) {
       poll: poll.poll._id
     };
     ctrl.inputComment = null;
-    console.log('before create poll: '+JSON.stringify($scope.poll));
     Polls.createComm({poll: poll.poll, comment: c}, function(err, resp){
       if(err) { return console.error(err); }
-      console.log('resp from createComm: '+JSON.stringify(resp));
-      console.log('after create, before getComms poll: '+JSON.stringify($scope.poll));
       ctrl.getComments(poll);
     });
   };

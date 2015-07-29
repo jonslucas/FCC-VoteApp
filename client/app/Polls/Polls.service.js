@@ -9,7 +9,6 @@ angular.module('basejumpsApp')
         method:'get',
         url: '/api/comments/'+id
       }).success(function(data){
-        console.log('success: '+JSON.stringify(data));
         cb(null, data);
       }).error(function(err){
         cb(err);
@@ -30,8 +29,6 @@ angular.module('basejumpsApp')
         if(curr===user) return true;
         else return acc;
       }, false);
-      //console.log('user: '+user);
-      //console.log('author: '+poll.author);
 
       if(user === (poll.author||poll.author._id)) poll.voted = true;
 
@@ -76,15 +73,10 @@ angular.module('basejumpsApp')
 
 
     var update_poll = function(poll, cb) {
-      //if(poll.poll.author.name) {
-      //  var auth = poll.poll.author;
-      //  poll.poll.author = auth._id;
-      //}
+
       $http.put('/api/polls/'+poll.poll._id, poll.poll)
         .success(function (resp) {
-          //if(auth){
-          //  resp.author=auth;
-          //}
+
           get_polls(resp.question,poll.poll.author.name, function(err, poll) {
             if(err) { cb(err); }
             cb(null, poll);
